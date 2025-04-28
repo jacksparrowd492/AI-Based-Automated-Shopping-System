@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Grocery Detection</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(to right, #f2f2f2, #e0f7fa);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        h2 {
+            color: #00796b;
+            margin-top: 20px;
+            font-size: 2.5rem;
+            text-shadow: 1px 1px 2px #ccc;
+        }
+
+        img {
+            margin-top: 20px;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            max-width: 90%;
+            height: auto;
+        }
+
+        .btn-container {
+            margin-top: 30px;
+            display: flex;
+            gap: 20px;
+        }
+
+        button {
+            padding: 15px 30px;
+            background-color: #00796b;
+            color: white;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        button:hover {
+            background-color: #004d40;
+            transform: scale(1.05);
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        #status {
+            margin-top: 15px;
+            font-size: 1.1rem;
+            color: #00796b;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h2>Real-Time Grocery Detection</h2>
+    <img src="{{ url_for('video_feed') }}" width="720" />
+    
+    <div class="btn-container">
+        <button onclick="toggleDetection()">Detect</button>
+        <a href="/generate_bill"><button>Generate Bill</button></a>
+    </div>
+
+    <div id="status">Detection: OFF</div>
+
+    <script>
+        let detecting = false;
+
+        function toggleDetection() {
+            fetch('/toggle_detection', {
+                method: 'POST'
+            }).then(() => {
+                detecting = !detecting;
+                document.getElementById('status').innerText = `Detection: ${detecting ? 'ON' : 'OFF'}`;
+            });
+        }
+    </script>
+</body>
+</html>

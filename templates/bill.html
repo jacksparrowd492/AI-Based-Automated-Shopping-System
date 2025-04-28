@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bill Summary</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(to right, #fdfbfb, #ebedee);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        h2 {
+            color: #2c3e50;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        h3 {
+            margin-top: 30px;
+            color: #34495e;
+            font-size: 1.5rem;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 80%;
+            max-width: 800px;
+            margin: 20px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+        }
+
+        table th, table td {
+            border: 1px solid #ddd;
+            padding: 12px 20px;
+            text-align: center;
+        }
+
+        table th {
+            background-color: #00796b;
+            color: white;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        table tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        p {
+            font-size: 1.2rem;
+            color: #2f4f4f;
+            margin: 10px 0;
+        }
+
+        strong {
+            color: #000;
+        }
+
+        img {
+            margin-top: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .pay-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 24px;
+            font-size: 16px;
+            background-color: #43a047;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: background-color 0.3s ease;
+        }
+
+        .pay-btn:hover {
+            background-color: #388e3c;
+        }
+
+        button {
+            padding: 12px 24px;
+            font-size: 16px;
+            background-color: #00796b;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: #00695c;
+        }
+    </style>
+</head>
+<body>
+    <h2>Purchase Bill</h2>
+    {{ table|safe }}
+    <p><strong>Total Cost:</strong> Rs.{{ total }}</p>
+    <p><strong>Purchase Time:</strong> {{ time }}</p>
+
+    <h3>Scan to Pay</h3>
+    <p>Please scan the QR code below to complete your UPI payment to <strong>6382779352</strong>:</p>
+    <img src="{{ qr_code }}" alt="Bill QR Code" width="250" height="250">
+
+    <a class="pay-btn"
+       href="upi://pay?pa=jacksparrowd492@oksbi&pn=Karthi%20Keyan&mc=0000&tid=txn{{ time }}&tr=bill{{ time }}&tn=Grocery%20Bill&am={{ total }}&cu=INR"
+       target="_blank">
+       💸 Pay Now
+    </a>
+
+    <form action="{{ url_for('confirm_payment') }}">
+        <button type="submit">✅ Confirm Payment</button>
+    </form>
+</body>
+</html>
